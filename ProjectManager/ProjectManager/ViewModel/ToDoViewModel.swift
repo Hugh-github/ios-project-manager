@@ -43,7 +43,7 @@ final class ToDoViewModel: Readjustable, Editable {
             name: Notification.Name.doneToToDo,
             object: nil
         )
-        fetchToDoData()
+//        fetchToDoData()
     }
 
     func addProject(
@@ -136,13 +136,13 @@ final class ToDoViewModel: Readjustable, Editable {
         return false
     }
 
-    private func fetchToDoData() {
-        do {
-            try databaseManager.fetchSection(Section.todo).forEach { project in
-                toDoData.value.append(project)
-            }
-        } catch {
-            message = "Fetch Error"
-        }
-    }
+//    private func fetchToDoData() {
+//        do {
+//            try databaseManager.fetchSection(Section.todo).forEach { project in
+//                toDoData.value.append(project)
+//            }
+//        } catch {
+//            message = "Fetch Error"
+//        }
+//    }
 }

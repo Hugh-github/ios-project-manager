@@ -31,10 +31,9 @@ final class LocalDatabaseManager: DatabaseLogic {
         try save(context)
     }
     
-    func fetchSection(_ section: String) throws -> [ProjectUnit] {
+    func fetchData() throws -> [ProjectUnit] {
         let context = persistentContainer.viewContext
         let request = NSFetchRequest<Project>(entityName: "Project")
-        request.predicate = NSPredicate(format: "section = %@", section)
         
         let projects = try context.fetch(request)
         let result = projects.compactMap { data -> ProjectUnit? in

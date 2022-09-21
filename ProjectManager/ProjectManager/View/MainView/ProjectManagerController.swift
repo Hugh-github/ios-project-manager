@@ -7,9 +7,31 @@
 import UIKit
 
 final class ProjectManagerController: UIViewController {
-    private let toDoViewController = ToDoViewController()
-    private let doingViewController = DoingViewController()
-    private let doneViewController = DoneViewController()
+    let viewModel = ViewModel(databaseManager: MockLocalDatabaseManager.shared)
+
+//    private let toDoViewController = ToDoViewController(viewModel: self.viewModel)
+    private lazy var toDoViewController = {
+        self.viewModel.changeState(to: ToDo(viewModel: self.viewModel))
+        let vc = ToDoViewController(viewModel: viewModel)
+
+        return vc
+    }()
+
+    private lazy var doingViewController = {
+        self.viewModel.changeState(to: Doing(viewModel: self.viewModel))
+        let vc = DoingViewController(viewModel: self.viewModel)
+
+        return vc
+    }()
+
+    private lazy var doneViewController = {
+        self.viewModel.changeState(to: Done(viewModel: self.viewModel))
+        let vc = DoneViewController(viewModel: self.viewModel)
+
+        return vc
+    }()
+
+//    private lazy var doneViewController = DoneViewController(viewModel: viewModel)
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -26,6 +48,9 @@ final class ProjectManagerController: UIViewController {
         super.viewDidLoad()
         configureNavigationItems()
         configureUI()
+//        toDoViewController = ToDoViewController(viewModel: viewModel)
+//        doingViewController = DoingViewController(viewModel: viewModel)
+//        doneViewController = DoneViewController(viewModel: viewModel)
     }
     
     private func configureNavigationItems() {
@@ -39,7 +64,7 @@ final class ProjectManagerController: UIViewController {
     
     @objc func didTapAddButton() {
         let projectAdditionController = ProjectAdditionController()
-        projectAdditionController.viewModel = self.toDoViewController.viewModel
+        projectAdditionController.viewModel = self.viewModel
 
         let navigationController = UINavigationController(rootViewController: projectAdditionController)
         navigationController.modalPresentationStyle = .formSheet

@@ -18,7 +18,8 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
     private var doneViewdataSource: DataSource?
     private var doneViewSnapshot: Snapshot?
 
-    private let viewModel = DoneViewModel(databaseManager: MockLocalDatabaseManager.shared)
+//    private let viewModel = DoneViewModel(databaseManager: MockLocalDatabaseManager.shared)
+    private var viewModel: ViewModel?
 
     private let doneListView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -29,6 +30,17 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
         return tableView
     }()
 
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,7 +49,8 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
         configureObserver()
         configureTapGesture()
         configureLongPressGesture()
-        showAlert()
+//        showAlert()
+        viewModel?.changeState(to: Done(viewModel: self.viewModel!))
     }
 
     @objc func didTapCell(_ recognizer: UITapGestureRecognizer) {
@@ -95,9 +108,9 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
                     date: item.deadLine.localizedString
                 )
 
-                if self.viewModel.isPassDeadLine(item.deadLine) {
-                    cell.changeTextColor()
-                }
+//                if self.viewModel.isPassDeadLine(item.deadLine) {
+//                    cell.changeTextColor()
+//                }
 
                 cell.separatorInset = .zero
 
@@ -107,7 +120,7 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
 
     private func configureObserver() {
-        viewModel.doneData.subscribe { [weak self] projectUnitArray in
+        viewModel!.doneData.subscribe { [weak self] projectUnitArray in
             guard let self = self else {
                 return
             }
@@ -141,19 +154,19 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
         doneListView.addGestureRecognizer(longPressGesture)
     }
     
-    private func showAlert() {
-        viewModel.showAlert = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            
-            let alert = UIAlertController(title: "Error", message: self.viewModel.message, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default)
-            
-            alert.addAction(okAction)
-            self.present(alert, animated: true)
-        }
-    }
+//    private func showAlert() {
+//        viewModel.showAlert = { [weak self] in
+//            guard let self = self else {
+//                return
+//            }
+//
+//            let alert = UIAlertController(title: "Error", message: self.viewModel.message, preferredStyle: .alert)
+//            let okAction = UIAlertAction(title: "OK", style: .default)
+//
+//            alert.addAction(okAction)
+//            self.present(alert, animated: true)
+//        }
+//    }
 
     private func configureSnapshot(data: [ProjectUnit]) -> Snapshot {
         var snapshot = Snapshot()
@@ -204,7 +217,7 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
 extension DoneViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = SectionHeaderView()
-        headerView.setupLabelText(section: Section.done, number: viewModel.count)
+        headerView.setupLabelText(section: Section.done, number: (viewModel?.count!)!)
 
         return headerView
     }
@@ -220,7 +233,7 @@ extension DoneViewController: UITableViewDelegate {
             guard let self = self else {
                 return
             }
-            self.viewModel.delete(indexPath.row)
+            self.viewModel!.delete(indexPath.row)
             
             success(true)
         }

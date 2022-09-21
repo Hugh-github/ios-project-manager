@@ -9,7 +9,7 @@ import Foundation
 
 protocol DatabaseLogic {
     func create(data: ProjectUnit) throws
-    func fetchSection(_ section: String) throws -> [ProjectUnit]
+    func fetchData() throws -> [ProjectUnit]
     func update(data: ProjectUnit) throws
     func delete(id: UUID) throws
 }

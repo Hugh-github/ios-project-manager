@@ -9,7 +9,7 @@ import UIKit
 
 final class ProjectModificationController: UIViewController {
     private let projectAdditionScrollView = ProjectAdditionScrollView()
-    var viewModel: Editable?
+    var viewModel: ViewModel?
     var indexPath: Int?
 
     override func viewDidLoad() {
