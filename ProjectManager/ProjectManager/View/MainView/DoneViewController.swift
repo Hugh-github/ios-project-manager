@@ -54,6 +54,8 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
 
     @objc func didTapCell(_ recognizer: UITapGestureRecognizer) {
+        viewModel?.changeState(to: Done(viewModel: self.viewModel!))
+
         guard recognizer.state == UIGestureRecognizer.State.ended else {
             return
         }
@@ -68,6 +70,8 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
 
     @objc func didPressCell(_ recognizer: UITapGestureRecognizer) {
+        viewModel?.changeState(to: Done(viewModel: self.viewModel!))
+
         guard recognizer.state == UIGestureRecognizer.State.began else {
             return
         }
@@ -216,6 +220,8 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
 
 extension DoneViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        viewModel?.changeState(to: Done(viewModel: self.viewModel!))
+
         let headerView = SectionHeaderView()
         headerView.setupLabelText(section: Section.done, number: (viewModel?.count!)!)
 
@@ -226,6 +232,8 @@ extension DoneViewController: UITableViewDelegate {
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
+        viewModel?.changeState(to: Done(viewModel: self.viewModel!))
+
         let delete = UIContextualAction(
             style: .normal,
             title: "Delete"

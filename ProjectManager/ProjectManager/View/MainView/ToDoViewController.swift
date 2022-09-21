@@ -52,6 +52,8 @@ final class ToDoViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
 
     @objc private func didTapCell(_ recognizer: UITapGestureRecognizer) {
+        self.viewModel!.changeState(to: ToDo(viewModel: self.viewModel!))
+
         guard recognizer.state == UIGestureRecognizer.State.ended else {
             return
         }
@@ -66,6 +68,8 @@ final class ToDoViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
 
     @objc private func didPressCell(_ recognizer: UITapGestureRecognizer) {
+        self.viewModel!.changeState(to: ToDo(viewModel: self.viewModel!))
+
         guard recognizer.state == UIGestureRecognizer.State.ended else {
             return
         }
@@ -215,6 +219,9 @@ final class ToDoViewController: UIViewController, UIGestureRecognizerDelegate, U
 extension ToDoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = SectionHeaderView()
+
+        self.viewModel!.changeState(to: ToDo(viewModel: self.viewModel!))
+
         guard let count = viewModel?.count else {
             return nil
         }
@@ -228,6 +235,8 @@ extension ToDoViewController: UITableViewDelegate {
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
+        self.viewModel!.changeState(to: ToDo(viewModel: self.viewModel!))
+
         let delete = UIContextualAction(
             style: .normal,
             title: "Delete"

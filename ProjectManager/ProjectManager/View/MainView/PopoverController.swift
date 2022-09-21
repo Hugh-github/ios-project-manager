@@ -56,11 +56,12 @@ final class PopoverController: UIViewController, UIGestureRecognizerDelegate, UI
     
     @objc func didTap(_ button: UIButton) {
         guard let indexPath = indexPath,
-              let section = button.lastTitleText else {
+              let currentSection = viewModel?.state?.identifier,
+              let nextSection = button.lastTitleText else {
             return
         }
 
-//        viewModel?.readjust(index: indexPath, section: section)
+        viewModel?.move(indexPath: indexPath, from: currentSection, to: nextSection)
         self.dismiss(animated: true)
     }
 

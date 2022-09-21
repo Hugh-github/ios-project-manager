@@ -8,7 +8,7 @@
 import Foundation
 
 final class ViewModel {
-    private var state: State?
+    var state: State?
 
     var toDoData: Observable<[ProjectUnit]> = Observable([])
     var doingData: Observable<[ProjectUnit]> = Observable([])
@@ -96,5 +96,9 @@ final class ViewModel {
         } catch {
             message = "Fetch Error"
         }
+    }
+
+    func move(indexPath: Int, from currentSection: String, to nextSection: String) {
+        state?.move(indexPath: indexPath, from: currentSection, to: nextSection)
     }
 }
