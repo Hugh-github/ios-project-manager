@@ -105,7 +105,7 @@ final class DoneViewController: UIViewController, UIGestureRecognizerDelegate, U
                 cell.setContents(
                     title: item.title,
                     body: item.body,
-                    date: item.deadLine.localizedString
+                    date: DateFormatterManager.sharedManager.dateStringFromDate(date: item.deadLine)
                 )
 
 //                if self.viewModel.isPassDeadLine(item.deadLine) {
