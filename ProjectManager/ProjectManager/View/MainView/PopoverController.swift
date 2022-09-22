@@ -8,7 +8,7 @@
 import UIKit
 
 final class PopoverController: UIViewController, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate {
-    var viewModel: Readjustable?
+    var viewModel: ViewModel?
     var indexPath: Int?
     
     private let stackView: UIStackView = {

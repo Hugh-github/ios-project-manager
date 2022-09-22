@@ -8,18 +8,32 @@
 final class Observable<T> {
     var value: T {
         didSet {
-            self.listener?(value)
+            self.toDoListener?(value)
+            self.doingListener?(value)
+            self.doneListener?(value)
         }
     }
 
-    var listener: ((T) -> Void)?
-
+    var toDoListener: ((T) -> Void)?
+    var doingListener: ((T) -> Void)?
+    var doneListener: ((T) -> Void)?
+    
     init(_ value: T) {
         self.value = value
     }
 
-    func subscribe(listener: @escaping (T) -> Void) {
+    func subscribeTodo(listener: @escaping (T) -> Void) {
         listener(value)
-        self.listener = listener
+        self.toDoListener = listener
+    }
+    
+    func subscribeDoing(listener: @escaping (T) -> Void) {
+        listener(value)
+        self.doingListener = listener
+    }
+    
+    func subscribeDone(listener: @escaping (T) -> Void) {
+        listener(value)
+        self.doneListener = listener
     }
 }

@@ -9,14 +9,13 @@ import UIKit
 
 final class ProjectModificationController: UIViewController {
     private let projectAdditionScrollView = ProjectAdditionScrollView()
-    var viewModel: Editable?
+    var viewModel: ViewModel?
     var indexPath: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationItems()
         configureUI()
-        setContent()
     }
 
     @objc private func didTapDoneButton() {
@@ -65,12 +64,7 @@ final class ProjectModificationController: UIViewController {
         ])
     }
 
-    private func setContent() {
-        guard let indexPath = indexPath,
-              let data = viewModel?.fetch(indexPath) else {
-            return
-        }
-
+    func setContent(data: ProjectUnit) {
         projectAdditionScrollView.setContent(data: data)
     }
 }
