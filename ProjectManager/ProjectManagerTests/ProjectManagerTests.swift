@@ -16,8 +16,8 @@ final class ProjectManagerTests: XCTestCase {
         try super.setUpWithError()
 
         toDoSut = ToDoViewModelSpy()
-        toDoSut.callCountOfData = 0
         doingSut = DoingViewModelSpy()
+        toDoSut.callCountOfData = 0
         doingSut.callCountOfData = 0
     }
 
