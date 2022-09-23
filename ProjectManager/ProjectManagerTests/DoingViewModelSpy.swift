@@ -1,5 +1,5 @@
 //
-//  ToDoViewModelSpy.swift
+//  DoingViewModelSpy.swift
 //  ProjectManagerTests
 //
 //  Created by 전민수 on 2022/09/23.
@@ -8,8 +8,8 @@
 @testable import ProjectManager
 import Foundation
 
-final class ToDoViewModelSpy: CommonViewModelLogic, ContentAddible, ContentEditable, StatusChangable {
-    let identifier: String = "TestToDo"
+final class DoingViewModelSpy: CommonViewModelLogic, ContentAddible, ContentEditable, StatusChangable {
+    let identifier: String = "TestDoing"
     let data: Observable<[ProjectUnit]> = Observable([])
     let databaseManager: LocalDatabaseManager
 
@@ -52,14 +52,14 @@ final class ToDoViewModelSpy: CommonViewModelLogic, ContentAddible, ContentEdita
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(addData(_:)),
-            name: Notification.Name("TestDoing->TestToDo"),
+            name: Notification.Name("TestToDO->TestDoing"),
             object: nil
         )
 
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(addData(_:)),
-            name: Notification.Name("TestDone->TestToDo"),
+            name: Notification.Name("TestDone->TestDoing"),
             object: nil
         )
         subscribe()
@@ -93,10 +93,10 @@ final class ToDoViewModelSpy: CommonViewModelLogic, ContentAddible, ContentEdita
         let data = data.value.remove(at: index)
 
         switch status {
-        case "TestDoing":
-            NotificationCenter.default.post(name: Notification.Name("TestToDO->TestDoing"), object: data)
+        case "TestToDo":
+            NotificationCenter.default.post(name: Notification.Name("TestDoing->TestToDo"), object: data)
         case "TestDone":
-            NotificationCenter.default.post(name: Notification.Name("TestToDO->TestDone"), object: data)
+            NotificationCenter.default.post(name: Notification.Name("TestDoing->TestDone"), object: data)
         default:
             return
         }
