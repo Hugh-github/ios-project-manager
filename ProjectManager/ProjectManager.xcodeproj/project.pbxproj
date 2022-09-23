@@ -14,6 +14,7 @@
 		2033E66428D6F9B900D7B422 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2033E66328D6F9B900D7B422 /* FirebaseAuth */; };
 		2037F2E528DD46F700ADE953 /* CommonViewModelLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2037F2E428DD46F700ADE953 /* CommonViewModelLogic.swift */; };
 		2037F2E728DD51CF00ADE953 /* ContentAddible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2037F2E628DD51CF00ADE953 /* ContentAddible.swift */; };
+		2037F2EC28DDCC5D00ADE953 /* ToDoViewModelSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2037F2EB28DDCC5D00ADE953 /* ToDoViewModelSpy.swift */; };
 		2054633528D30110005FF658 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2054633428D30110005FF658 /* Observable.swift */; };
 		209C7F1E28D5B87900DA554D /* ProjectModificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209C7F1D28D5B87900DA554D /* ProjectModificationController.swift */; };
 		209C7F2028D5B8C000DA554D /* ContentEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209C7F1F28D5B8C000DA554D /* ContentEditable.swift */; };
@@ -70,6 +71,7 @@
 		2033E65A28D6F7F300D7B422 /* ProjectManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManagerTests.swift; sourceTree = "<group>"; };
 		2037F2E428DD46F700ADE953 /* CommonViewModelLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModelLogic.swift; sourceTree = "<group>"; };
 		2037F2E628DD51CF00ADE953 /* ContentAddible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentAddible.swift; sourceTree = "<group>"; };
+		2037F2EB28DDCC5D00ADE953 /* ToDoViewModelSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewModelSpy.swift; sourceTree = "<group>"; };
 		2054633428D30110005FF658 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		209C7F1D28D5B87900DA554D /* ProjectModificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectModificationController.swift; sourceTree = "<group>"; };
 		209C7F1F28D5B8C000DA554D /* ContentEditable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentEditable.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				2033E65A28D6F7F300D7B422 /* ProjectManagerTests.swift */,
+				2037F2EB28DDCC5D00ADE953 /* ToDoViewModelSpy.swift */,
 			);
 			path = ProjectManagerTests;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2033E65B28D6F7F300D7B422 /* ProjectManagerTests.swift in Sources */,
+				2037F2EC28DDCC5D00ADE953 /* ToDoViewModelSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
