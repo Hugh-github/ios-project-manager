@@ -30,10 +30,21 @@ final class HistoryPopoverController: UIViewController, UIPopoverPresentationCon
         return tableView
     }()
 
-    override func viewDidLoad() {
+//    override func viewDidLoad() {
+//        configureUI()
+//        configureDataSource()
+////        configureObserver()
+//    }
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
         configureUI()
         configureDataSource()
-//        configureObserver()
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func configureUI() {
@@ -76,23 +87,6 @@ final class HistoryPopoverController: UIViewController, UIPopoverPresentationCon
 
         return snapshot
     }
-
-//    private func configureObserver() {
-//        toDoViewModel?.registerMovingHistory = { [weak self] (title, transition) in
-//            guard let self = self else {
-//                return
-//            }
-//
-//            self.snapshot = self.configureSnapshot(data: [ProjectHistoryUnit(content: title + transition, time: Date())])
-//
-//            guard let snapshot = self.snapshot else {
-//                return
-//            }
-//
-//            self.dataSource?.apply(snapshot)
-//            self.tableView.reloadData()
-//        }
-//    }
 }
 
 extension HistoryPopoverController: UITableViewDelegate {

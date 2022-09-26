@@ -16,7 +16,8 @@ protocol CommonViewModelLogic: AnyObject {
     var message: String { get set }
     var showAlert: (() -> Void)? { get set }
     var calledContentsOfMoving: (String, String)? { get set }
-    var registerMovingHistory: ((String, String) -> Void)? { get set }
+    var registerDeletionHistory: (() -> Void)? { get set }
+    var registerMovingHistory: ((String, String, String) -> Void)? { get set }
 
     func delete(_ indexPath: Int)
 }

@@ -11,7 +11,7 @@ final class ToDoViewModel: CommonViewModelLogic, ContentAddible, ContentEditable
     let identifier: String = ProjectStatus.todo
     let data: Observable<[ProjectUnit]> = Observable([])
     let databaseManager: LocalDatabaseManager
-    
+
     var message: String = "" {
         didSet {
             guard let showAlert = self.showAlert else {
@@ -20,20 +20,36 @@ final class ToDoViewModel: CommonViewModelLogic, ContentAddible, ContentEditable
             showAlert()
         }
     }
-    
+
     var showAlert: (() -> Void)?
 
+    var calledContentsOfAddition: String? {
+        didSet {
+            guard let registerAdditionHistory = self.registerAdditionHistory,
+                  let newProject = calledContentsOfAddition else {
+                return
+            }
+
+            registerAdditionHistory(newProject)
+        }
+    }
     var calledContentsOfMoving: (String, String)? {
         didSet {
             guard let registerMovingHistory = self.registerMovingHistory,
                   let a = calledContentsOfMoving else {
                 return
             }
-            registerMovingHistory(a.0, a.1)
+
+            let b = a.1
+            let c = b.components(separatedBy: ["t", "o"])
+
+            registerMovingHistory(a.0, c.first!, c.last!)
         }
     }
 
-    var registerMovingHistory: ((String, String) -> Void)?
+    var registerAdditionHistory: ((String) -> Void)?
+    var registerDeletionHistory: (() -> Void)?
+    var registerMovingHistory: ((String, String, String) -> Void)?
     
     init(databaseManager: LocalDatabaseManager) {
         self.databaseManager = databaseManager

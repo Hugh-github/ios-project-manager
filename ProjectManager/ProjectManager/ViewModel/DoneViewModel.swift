@@ -8,17 +8,23 @@
 import Foundation
 
 final class DoneViewModel: CommonViewModelLogic, ContentEditable, StatusChangable {
+    var registerDeletionHistory: (() -> Void)?
+
     var calledContentsOfMoving: (String, String)? {
         didSet {
             guard let registerMovingHistory = self.registerMovingHistory,
                   let a = calledContentsOfMoving else {
                 return
             }
-            registerMovingHistory(a.0, a.1)
+
+            let b = a.1
+            let c = b.components(separatedBy: ["t", "o"])
+
+            registerMovingHistory(a.0, c.first!, c.last!)
         }
     }
 
-    var registerMovingHistory: ((String, String) -> Void)?
+    var registerMovingHistory: ((String, String, String) -> Void)?
 
     let identifier: String = ProjectStatus.done
     let data: Observable<[ProjectUnit]> = Observable([])
@@ -58,6 +64,8 @@ final class DoneViewModel: CommonViewModelLogic, ContentEditable, StatusChangabl
         }
         
         projectUnit.section = identifier
+
+        calledContentsOfMoving = (projectUnit.title, notification.name.rawValue)
         
         self.data.value.append(projectUnit)
         

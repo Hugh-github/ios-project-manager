@@ -58,23 +58,22 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
         )
     }
 
-    @objc private func configurePopoverController(_ sender: UIBarButtonItem) {
-
+    @objc private func configurePopoverController() {
         controller.modalPresentationStyle = UIModalPresentationStyle.popover
         controller.toDoViewModel = self.toDoViewModel
         controller.doingViewModel = self.doingViewModel
         controller.doneViewModel = self.doneViewModel
-        //                controller.preferredContentSize = CGSize(width: 300, height: 120)
-        
+        controller.preferredContentSize = CGSize(width: 500, height: 500)
+
         guard let popController = controller.popoverPresentationController else {
             return
         }
-        
+
         popController.permittedArrowDirections = .up
-        
+
         popController.delegate = self
         popController.sourceView = view
-        popController.barButtonItem = sender
+        popController.barButtonItem = navigationItem.leftBarButtonItem
 
         self.present(controller, animated: true)
     }
@@ -103,5 +102,4 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
             stackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
 }
