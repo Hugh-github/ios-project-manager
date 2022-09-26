@@ -8,6 +8,18 @@
 import Foundation
 
 final class DoingViewModel: CommonViewModelLogic, ContentEditable, StatusChangable {
+    var calledContentsOfMoving: (String, String)? {
+        didSet {
+            guard let registerMovingHistory = self.registerMovingHistory,
+                  let a = calledContentsOfMoving else {
+                return
+            }
+            registerMovingHistory(a.0, a.1)
+        }
+    }
+
+    var registerMovingHistory: ((String, String) -> Void)?
+
     let identifier: String = ProjectStatus.doing
     let data: Observable<[ProjectUnit]> = Observable([])
     let databaseManager: LocalDatabaseManager

@@ -18,6 +18,7 @@ final class ProjectListViewController: UIViewController, UIGestureRecognizerDele
     private var dataSource: DataSource?
     private var snapshot: Snapshot?
     let viewModel: CommonViewModelLogic
+    let controller: HistoryPopoverController
 
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -28,8 +29,9 @@ final class ProjectListViewController: UIViewController, UIGestureRecognizerDele
         return tableView
     }()
 
-    init(viewModel: CommonViewModelLogic) {
+    init(viewModel: CommonViewModelLogic, controller: HistoryPopoverController) {
         self.viewModel = viewModel
+        self.controller = controller
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -129,6 +131,18 @@ final class ProjectListViewController: UIViewController, UIGestureRecognizerDele
 
             self.dataSource?.apply(snapshot)
             self.tableView.reloadData()
+        }
+
+        viewModel.registerMovingHistory = { [weak self] (title, transition) in
+            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(content: title + transition, time: Date())])
+
+
+            guard let snapshot = self?.controller.snapshot else {
+                return
+            }
+
+            self?.controller.dataSource?.apply(snapshot)
+            self?.controller.tableView.reloadData()
         }
     }
 

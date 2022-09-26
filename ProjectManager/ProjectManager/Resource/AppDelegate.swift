@@ -5,7 +5,6 @@
 // 
 
 import UIKit
-
 import FirebaseCore
 
 @main

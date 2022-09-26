@@ -22,6 +22,18 @@ final class ToDoViewModel: CommonViewModelLogic, ContentAddible, ContentEditable
     }
     
     var showAlert: (() -> Void)?
+
+    var calledContentsOfMoving: (String, String)? {
+        didSet {
+            guard let registerMovingHistory = self.registerMovingHistory,
+                  let a = calledContentsOfMoving else {
+                return
+            }
+            registerMovingHistory(a.0, a.1)
+        }
+    }
+
+    var registerMovingHistory: ((String, String) -> Void)?
     
     init(databaseManager: LocalDatabaseManager) {
         self.databaseManager = databaseManager
@@ -46,6 +58,8 @@ final class ToDoViewModel: CommonViewModelLogic, ContentAddible, ContentEditable
         }
         
         projectUnit.section = identifier
+
+        calledContentsOfMoving = (projectUnit.title, notification.name.rawValue)
         
         self.data.value.append(projectUnit)
         
