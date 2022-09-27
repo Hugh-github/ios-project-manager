@@ -66,6 +66,10 @@ final class ToDoViewModel: CommonViewModelLogic, ContentAddible, ContentEditable
             name: Notification.Name.doneToToDo,
             object: nil
         )
+
+        if databaseManager.isInMemory == false {
+            fetchProjectData()
+        }
     }
     
     @objc func addData(_ notification: Notification) {

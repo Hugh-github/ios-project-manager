@@ -17,7 +17,6 @@ final class HistoryPopoverController: UIViewController, UIPopoverPresentationCon
 
     var dataSource: DataSource?
     var snapshot: Snapshot?
-    var historyData: [ProjectHistoryUnit] = []
 
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -27,16 +26,13 @@ final class HistoryPopoverController: UIViewController, UIPopoverPresentationCon
         return tableView
     }()
 
-//    override func viewDidLoad() {
-//        configureUI()
-//        configureDataSource()
-////        configureObserver()
-//    }
-
     init() {
         super.init(nibName: nil, bundle: nil)
         configureUI()
         configureDataSource()
+
+        snapshot = Snapshot()
+        snapshot?.appendSections([.main])
     }
 
     @available(*, unavailable)
@@ -76,13 +72,8 @@ final class HistoryPopoverController: UIViewController, UIPopoverPresentationCon
         )
     }
 
-    func configureSnapshot(data: [ProjectHistoryUnit]) -> Snapshot {
-        var snapshot = Snapshot()
-        historyData.append(data.first!)
-        snapshot.appendSections([.main])
-        snapshot.appendItems(historyData)
-
-        return snapshot
+    func configureSnapshot(data: [ProjectHistoryUnit]) {
+        snapshot?.appendItems(data)
     }
 }
 

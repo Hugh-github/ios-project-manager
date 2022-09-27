@@ -10,7 +10,7 @@ import CoreData
 final class LocalDatabaseManager {
     static let inMemory = LocalDatabaseManager(isInMemory: true)
 
-    private var isInMemory: Bool
+    var isInMemory: Bool
 
     init(isInMemory: Bool) {
         self.isInMemory = isInMemory

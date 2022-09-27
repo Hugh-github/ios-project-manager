@@ -11,15 +11,17 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
 //    var ref: DatabaseReference!
 //    var todos = ["drink", "eat"]
 
-    let toDoViewModel = ToDoViewModel(databaseManager: LocalDatabaseManager.inMemory)
-    let doingViewModel = DoingViewModel(databaseManager: LocalDatabaseManager.inMemory)
-    let doneViewModel = DoneViewModel(databaseManager: LocalDatabaseManager.inMemory)
+    let db = LocalDatabaseManager(isInMemory: false)
+
+    private lazy var toDoViewModel = ToDoViewModel(databaseManager: db)
+    private lazy var doingViewModel = DoingViewModel(databaseManager: db)
+    private lazy var doneViewModel = DoneViewModel(databaseManager: db)
 
     private lazy var toDoViewController = ProjectListViewController(viewModel: toDoViewModel, controller: controller)
     private lazy var doingViewController = ProjectListViewController(viewModel: doingViewModel, controller: controller)
     private lazy var doneViewController = ProjectListViewController(viewModel: doneViewModel, controller: controller)
 
-    let controller = HistoryPopoverController()
+    private let controller = HistoryPopoverController()
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -42,7 +44,7 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
 //        let itemRef = self.ref.child("list")
 //        itemRef.setValue(self.todos)
         toDoViewModel.registerMovingHistory = { [weak self] (title, previous, next) in
-            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+            self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
                 content: "Moved '\(title)' from \(previous) to \(next).",
                 time: Date())]
             )
@@ -56,7 +58,7 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
         }
 
         doingViewModel.registerMovingHistory = { [weak self] (title, previous, next) in
-            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+            self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
                 content: "Moved '\(title)' from \(previous) to \(next).",
                 time: Date())]
             )
@@ -70,7 +72,7 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
         }
 
         doneViewModel.registerMovingHistory = { [weak self] (title, previous, next) in
-            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+            self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
                 content: "Moved '\(title)' from \(previous) to \(next).",
                 time: Date())]
             )
@@ -83,12 +85,8 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
             self?.controller.tableView.reloadData()
         }
 
-        guard var viewModel = self.toDoViewModel as? ContentAddible else {
-            return
-        }
-
         toDoViewModel.registerAdditionHistory = { [weak self] (title) in
-            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+            self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
                 content: "Added '\(title)'.",
                 time: Date())]
             )

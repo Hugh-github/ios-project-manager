@@ -56,6 +56,10 @@ final class DoneViewModel: CommonViewModelLogic, ContentEditable, StatusChangabl
             name: Notification.Name.doingToDone,
             object: nil
         )
+
+        if databaseManager.isInMemory == false {
+            fetchProjectData()
+        }
     }
     
     @objc func addData(_ notification: Notification) {

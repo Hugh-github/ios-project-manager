@@ -56,6 +56,10 @@ final class DoingViewModel: CommonViewModelLogic, ContentEditable, StatusChangab
             name: Notification.Name.doneToDoing,
             object: nil
         )
+
+        if databaseManager.isInMemory == false {
+            fetchProjectData()
+        }
     }
     
     @objc func addData(_ notification: Notification) {
