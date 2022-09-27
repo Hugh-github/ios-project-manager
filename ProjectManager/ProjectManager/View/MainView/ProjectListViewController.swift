@@ -74,12 +74,12 @@ final class ProjectListViewController:
 
         let longPressLocation = recognizer.location(in: self.tableView)
 
-        guard let tapIndexPath = self.tableView.indexPathForRow(at: longPressLocation),
-              let tappedCell = self.tableView.cellForRow(at: tapIndexPath) as? ProjectManagerListCell else {
+        guard let tapIndexPath = self.tableView.indexPathForRow(at: longPressLocation) else {
             return
         }
 
-        configurePopoverController(indexPath: tapIndexPath.row, in: tappedCell)
+        let currentCursor = recognizer.location(in: self.view)
+        configurePopoverController(indexPath: tapIndexPath.row, at: currentCursor)
     }
 
     private func configureUI() {
@@ -188,7 +188,7 @@ final class ProjectListViewController:
         self.present(navigationController, animated: true)
     }
 
-    private func configurePopoverController(indexPath: Int, in cell: UITableViewCell) {
+    private func configurePopoverController(indexPath: Int, at currentCursor: CGPoint) {
         let controller = PopoverController()
         controller.viewModel = self.viewModel as? StatusChangable
         controller.indexPath = indexPath
@@ -204,8 +204,8 @@ final class ProjectListViewController:
         popController.delegate = self
         popController.sourceView = view
         popController.sourceRect = CGRect(
-            x: cell.frame.midX,
-            y: cell.frame.midY,
+            x: currentCursor.x,
+            y: currentCursor.y,
             width: 0,
             height: 0
         )
