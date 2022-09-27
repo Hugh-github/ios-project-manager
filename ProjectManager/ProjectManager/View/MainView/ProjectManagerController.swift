@@ -41,6 +41,65 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
 //        self.ref = Database.database().reference()
 //        let itemRef = self.ref.child("list")
 //        itemRef.setValue(self.todos)
+        toDoViewModel.registerMovingHistory = { [weak self] (title, previous, next) in
+            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+                content: "Moved '\(title)' from \(previous) to \(next).",
+                time: Date())]
+            )
+
+            guard let snapshot = self?.controller.snapshot else {
+                return
+            }
+
+            self?.controller.dataSource?.apply(snapshot)
+            self?.controller.tableView.reloadData()
+        }
+
+        doingViewModel.registerMovingHistory = { [weak self] (title, previous, next) in
+            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+                content: "Moved '\(title)' from \(previous) to \(next).",
+                time: Date())]
+            )
+
+            guard let snapshot = self?.controller.snapshot else {
+                return
+            }
+
+            self?.controller.dataSource?.apply(snapshot)
+            self?.controller.tableView.reloadData()
+        }
+
+        doneViewModel.registerMovingHistory = { [weak self] (title, previous, next) in
+            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+                content: "Moved '\(title)' from \(previous) to \(next).",
+                time: Date())]
+            )
+
+            guard let snapshot = self?.controller.snapshot else {
+                return
+            }
+
+            self?.controller.dataSource?.apply(snapshot)
+            self?.controller.tableView.reloadData()
+        }
+
+        guard var viewModel = self.toDoViewModel as? ContentAddible else {
+            return
+        }
+
+        toDoViewModel.registerAdditionHistory = { [weak self] (title) in
+            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
+                content: "Added '\(title)'.",
+                time: Date())]
+            )
+
+            guard let snapshot = self?.controller.snapshot else {
+                return
+            }
+
+            self?.controller.dataSource?.apply(snapshot)
+            self?.controller.tableView.reloadData()
+        }
     }
     
     private func configureNavigationItems() {
@@ -60,9 +119,6 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
 
     @objc private func configurePopoverController() {
         controller.modalPresentationStyle = UIModalPresentationStyle.popover
-        controller.toDoViewModel = self.toDoViewModel
-        controller.doingViewModel = self.doingViewModel
-        controller.doneViewModel = self.doneViewModel
         controller.preferredContentSize = CGSize(width: 500, height: 500)
 
         guard let popController = controller.popoverPresentationController else {

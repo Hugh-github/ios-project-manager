@@ -132,38 +132,6 @@ final class ProjectListViewController: UIViewController, UIGestureRecognizerDele
             self.dataSource?.apply(snapshot)
             self.tableView.reloadData()
         }
-
-        viewModel.registerMovingHistory = { [weak self] (title, previous, next) in
-            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
-                content: "Moved '\(title)' from \(previous) to \(next).",
-                time: Date())]
-            )
-
-            guard let snapshot = self?.controller.snapshot else {
-                return
-            }
-
-            self?.controller.dataSource?.apply(snapshot)
-            self?.controller.tableView.reloadData()
-        }
-
-        guard var viewModel = self.viewModel as? ContentAddible else {
-            return
-        }
-
-        viewModel.registerAdditionHistory = { [weak self] (title) in
-            self?.controller.snapshot = self?.controller.configureSnapshot(data: [ProjectHistoryUnit(
-                content: "Added '\(title)'.",
-                time: Date())]
-            )
-
-            guard let snapshot = self?.controller.snapshot else {
-                return
-            }
-
-            self?.controller.dataSource?.apply(snapshot)
-            self?.controller.tableView.reloadData()
-        }
     }
 
     private func configureTapGesture() {

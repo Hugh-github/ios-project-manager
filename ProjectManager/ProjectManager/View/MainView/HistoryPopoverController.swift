@@ -17,9 +17,6 @@ final class HistoryPopoverController: UIViewController, UIPopoverPresentationCon
 
     var dataSource: DataSource?
     var snapshot: Snapshot?
-    var toDoViewModel: ToDoViewModel?
-    var doingViewModel: DoingViewModel?
-    var doneViewModel: DoneViewModel?
     var historyData: [ProjectHistoryUnit] = []
 
     let tableView: UITableView = {
