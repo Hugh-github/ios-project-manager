@@ -5,12 +5,15 @@
 // 
 
 import UIKit
+import Firebase
 
 final class ProjectManagerController: UIViewController, UIPopoverPresentationControllerDelegate {
 
-    private let toDoViewModel = ToDoViewModel(databaseManager: LocalDatabaseManager.inMemory)
-    private let doingViewModel = DoingViewModel(databaseManager: LocalDatabaseManager.inMemory)
-    private let doneViewModel = DoneViewModel(databaseManager: LocalDatabaseManager.inMemory)
+    var ref: DatabaseReference!
+
+    private let toDoViewModel = ToDoViewModel(databaseManager: LocalDatabaseManager.onDisk)
+    private let doingViewModel = DoingViewModel(databaseManager: LocalDatabaseManager.onDisk)
+    private let doneViewModel = DoneViewModel(databaseManager: LocalDatabaseManager.onDisk)
 
     private lazy var toDoViewController = ProjectListViewController(
         viewModel: toDoViewModel)
@@ -38,6 +41,44 @@ final class ProjectManagerController: UIViewController, UIPopoverPresentationCon
         configureNavigationItems()
         configureUI()
         configureObservers()
+
+        ref = Database.database().reference()
+        //        ref.child("user").child("1번 User").setValue(["username": "Minsoo"])
+        //        self.ref = Database.database().reference()
+        //        let itemRef = self.ref.child("list")
+        //        itemRef.setValue(self.todos)
+
+
+        // MARK: Remote로 저장(덮어쓰기)하기 위한 Encoding
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
+        let sookoong = ProjectUnit.sample
+        let jsonData = try? encoder.encode(sookoong)
+        if let jsonData = jsonData, let jsonString = String(data: jsonData, encoding: .utf8) {
+                print(jsonString)
+            ref.child("project").child("sample project1").setValue(jsonString)
+        }
+
+        // MARK: Remote에서 불러오기 위한 Decoding (데이터가 한 번만 필요한 경우 -> get Data)
+        // 데이터를 지속적으로 읽기 위해서는 Observer를 사용하여 데이터 한 번 읽기
+        let decoder = JSONDecoder()
+
+        ref.child("project/sample project1").getData(completion:  { error, snapshot in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+            let sample = snapshot?.value as? String ?? "Unknown";
+            let data = sample.data(using: .utf8)
+
+            if let data = data, let finalSampleData = try? decoder.decode(ProjectUnit.self, from: data) {
+                print(finalSampleData.title)
+                print(finalSampleData.body)
+                print(finalSampleData.id)
+                print(finalSampleData.deadLine)
+                print(finalSampleData.section)
+            }
+        })
     }
     
     private func configureNavigationItems() {
