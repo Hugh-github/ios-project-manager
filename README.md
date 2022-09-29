@@ -313,12 +313,25 @@ private let scheduleTitleTextField: UITextField = {
     3. ViewController(View)의 코드가 너무 길어짐
 - 각각 하나의 ViewModel과 ViewController를 사용했으나, 분기 처리가 많아 TableView 하나를 하나의 ViewController로 사용하고 해당 View(ViewController)에서 사용할 ViewModel을 따로 구현했습니다. 분기 처리는 하지 않지만 똑같은 코드가 여러 곳에서 사용되다 보니 이상하다는 느낌이 들었습니다. 또한 ViewController를 여러개 생성해서 구현하는게 어색하다고 생각했습니다. 이에 대하여 라이언의 의견을 여쭈어보고 싶습니다!
     
+#### A1. ViewModel과 ViewController 분리
+- 프로그래밍을 하는 것 자체도 트레이드 오프 과정의 연속입니다. 우리가 내리는 결정은 항상 좋은 방향만 있기는 어렵습니다. 여러분이 구현한 방식도 마찬가지입니다. 개별 코멘트에도 고민해보자는 내용을 적었지만, 이 부분에 대해서는 여러분이 직접 고민해보고 저와 이야기 나누어보았으면 좋겠습니다. 코드의 모양이 어색하기보다 목적에 따라 여러분이 방식을 정하는 것입니다. 고를 수 있는 선택지 중에서 어떤 선택지가 우리의 방향과 조금이라도 더 맞을지 고민해봅시다.
+    
 #### Q2. ViewModel Test Code
 - ViewModel에 대한 Test Code를 구현했지만 Observable의 클로저가 잘 호출되는지 확인하기 위해 관찰하고 있는 data가 변할 때마다 전역변수로 선언해 준 count를 1씩 증가시켰습니다. ViewModel에서 구현한 클로저를 test 하는 방법이 궁금합니다. 또한 ViewModel 어떤 방식으로 Test 하는지 감이 오질 않습니다.
+    
+#### A2. ViewModel Test Code
+- 개인적으로 여러분이 테스트하신 방식대로 spy 형태의 테스트를 수행해볼 것 같습니다. 잘 호출되는지 검증하는 것 자체가 목적이니까요. true/false 형태의 테스트는 복수 호출될 수 있기 때문에 횟수 형태로 많이 진행합니다.
     
 ### STEP 2-4 Questions & Answers
 #### Q1. InMemory 방식의 Core Data에 관한 Singleton 생성 고민
 - STEP 2-4 TroubleShooting에 언급한 바와 같이, InMemory 방식의 Core Data의 경우, 각각의 섹션 뷰 컨트롤러에 대하여 싱글턴 객체를 사용하여 공통된 Core Data Manager를 설정해보았습니다. 이에 대하여 해당 해결방법이 적절한 방식이었는지, 그리고 이보다 더 좋은 방법은 무엇이 있을지 질문드리고 싶습니다!
+    
+#### A1. InMemory 방식의 Core Data에 관한 Singleton 생성 고민
+- ViewController 자체를 테스트 할 것이 아니라면 실제 제품 로직에는 실제 CoreData 로직을 구현한 인스턴스를 사용해도 될 것 같네요. 앱 내부에서는 일반적으로 저장 공간을 공유하는 로직을 많이 구현하므로 싱글턴 패턴을 사용해도 괜찮을 것 같다는 의견입니다.
+    
 #### Q2. InMemory 방식의 Core Data 유닛 테스트 방법 고민
 - InMemory 방식의 Core Data에 대하여 sut를 `ToDoViewModel(databaseManager: MockLocalDatabaseManager.shared`로 설정을 하면, `func test_viewModel이_코어데이터에_저장된_projectUnit을_정상적으로_삭제하는지_테스트()` 메서드가 위에서 실행된 `func test_viewModel이_projectUnit을_정상적으로_코어데이터에_저장하는지_테스트()`메서드로 인한 Core Data에 저장된 값이 영향을 미치고 있음을 확인하였습니다.
 - 이로 인하여, sut를 `ToDoViewModel(databaseManager: MockLocalDatabaseManager()`와 같이, 싱글톤 객체가 아닌 인스턴스를 생성한 결과, 각각 독립적인 테스트가 적용된 것 같습니다. InMemory 방식에서의 테스트를 어떻게 적용해야 하는지 조언을 구하고 싶습니다.
+    
+#### A2. InMemory 방식의 Core Data 유닛 테스트 방법 고민
+- 각 테스트가 이루어지기 전 항상 동일한 초기 상태임을 보장해주어야 합니다. 이를 위해 여러분이 적용하신 방식이나 테스트 케이스 타입 내부에 저장공간을 비워주기 위한 편의성 메서드를 구성하는 방식을 생각해볼 수 있습니다.
